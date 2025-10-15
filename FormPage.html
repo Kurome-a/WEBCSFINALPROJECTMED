@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cooking101 • Form</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="site">
+
+  <header>
+    <div class="container header-inner">
+      <a class="brand" href="HomePage.html"><span class="logo"></span><span>Cooking101</span></a>
+      <nav aria-label="Primary">
+        <ul>
+          <li><a href="HomePage.html">Home</a></li>
+          <li><a href="BreakfastPage.html">Breakfast</a></li>
+          <li><a href="LunchPage.html">Lunch</a></li>
+          <li><a href="DinnerPage.html">Dinner</a></li>
+          <li><a href="DessertPage.html">Dessert</a></li>
+          <li><a href="GlossaryPage.html">Glossary</a></li>
+          <li><a href="FormPage.html" class="active">Form</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="panel">
+      <h2 class="section-title">Meal Suggestion</h2>
+      <p class="meta" style="margin-bottom:16px">Share your ideas with us here</p>
+
+      <form class="form" action="#" method="post">
+        <div class="field">
+          <label for="name">Your name</label>
+          <input id="name" name="name" type="text" placeholder="Name here" required>
+        </div>
+
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="text" placeholder="you@example.com">
+        </div>
+
+        <fieldset>
+          <legend>Meal time</legend>
+          <label><input type="radio" name="mealtime" value="breakfast" checked> Breakfast</label>
+          <label><input type="radio" name="mealtime" value="lunch"> Lunch</label>
+          <label><input type="radio" name="mealtime" value="dinner"> Dinner</label>
+          <label><input type="radio" name="mealtime" value="dessert"> Dessert</label>
+        </fieldset>
+
+        <div class="field">
+          <label for="servings">Servings</label>
+          <input id="servings" name="servings" type="number" min="1" value="2">
+        </div>
+
+        <div class="field" style="grid-column:1/-1">
+          <label for="notes">Notes / Allergies</label>
+          <textarea id="notes" name="notes" placeholder="Anything we should know?"></textarea>
+        </div>
+
+        <div class="actions">
+          <button type="reset" class="btn-ghost">Reset</button>
+          <button type="submit" class="btn-primary">Submit</button>
+        </div>
+
+        <!-- MISSING ingredients, picture, steps, time  -->
+      </form>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container"><small> Made by Aaron Medina.</small></div>
+  </footer>
+
+</div>
+</body>
+</html>
