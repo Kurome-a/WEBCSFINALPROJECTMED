@@ -31,6 +31,7 @@
       <h2 class="section-title">Meal Suggestion</h2>
       <p class="meta" style="margin-bottom:16px">Share your ideas with us here</p>
 
+      <!-- user info -->
       <form class="form" action="#" method="post">
         <div class="field">
           <label for="name">Your name</label>
@@ -42,6 +43,31 @@
           <input id="email" name="email" type="text" placeholder="you@example.com">
         </div>
 
+        <!-- dish name -->
+       <div class="field">
+          <label for="dish">Dish name</label>
+          <input id="dish" name="dish" type="text" placeholder="e.g., Cheesy Garlic Omelette" required>
+        </div>
+
+        <!-- image upload/link -->
+        <div class="row">
+          <div class="field">
+            <label for="imageFile">Dish image (upload)</label>
+            <input id="imageFile" name="imageFile" type="file" accept="image/*">
+            <small class="subtle">Choose an image file. If both file and URL are provided, the file preview is shown.</small>
+          </div>
+          <div class="field">
+            <label for="imageUrl">Dish image (URL)</label>
+            <input id="imageUrl" name="imageUrl" type="text" placeholder="https://...">
+            <small class="subtle">Paste an image link to preview below.</small>
+          </div>
+        </div>
+
+        <div class="field" style="grid-column:1/-1">
+          <img id="preview" class="img-preview" alt="Dish preview" src="" style="display:none;">
+        </div>
+
+        <!-- meal time -->
         <fieldset>
           <legend>Meal time</legend>
           <label><input type="radio" name="mealtime" value="breakfast" checked> Breakfast</label>
@@ -49,6 +75,25 @@
           <label><input type="radio" name="mealtime" value="dinner"> Dinner</label>
           <label><input type="radio" name="mealtime" value="dessert"> Dessert</label>
         </fieldset>
+
+        <!-- ingredients -->
+        <div class="repeatable" id="ingredients-section">
+          <div class="compact" style="justify-content:space-between">
+            <h3 style="margin:0">Ingredients</h3>
+            <button type="button" class="ghostbtn" id="add-ingredient">+ Add ingredient</button>
+          </div>
+          <div class="list" id="ingredients-list"></div>
+        </div>
+
+        <!-- steps/process -->
+        <div class="repeatable" id="steps-section">
+          <div class="compact" style="justify-content:space-between">
+            <h3 style="margin:0">Process (Step-by-step)</h3>
+            <button type="button" class="ghostbtn" id="add-step">+ Add step</button>
+          </div>
+          <div class="list" id="steps-list"></div>
+          <small class="subtle">Tip: Add the time for each step; we'll total it for you automatically.</small>
+        </div>
 
         <div class="field">
           <label for="servings">Servings</label>
@@ -61,11 +106,40 @@
         </div>
 
         <div class="actions">
+          <span class="totaltime">Total time: <span id="total-time">0</span> min</span>
           <button type="reset" class="btn-ghost">Reset</button>
           <button type="submit" class="btn-primary">Submit</button>
         </div>
+        
+        <!-- Templates -->
+        <template id="ingredient-tpl">
+          <div class="item ingredient">
+            <div class="field">
+              <label>Amount</label>
+              <input type="text" name="ingredient_amount[]" placeholder="e.g., 2 tbsp">
+            </div>
+            <div class="field">
+              <label>Ingredient</label>
+              <input type="text" name="ingredient_name[]" placeholder="e.g., butter">
+            </div>
+            <button type="button" class="remove" aria-label="Remove ingredient">Remove</button>
+          </div>
+        </template>
 
-        <!-- MISSING ingredients, picture, steps, time  -->
+        <template id="step-tpl">
+          <div class="item step">
+            <div class="field wide">
+              <label>Step description</label>
+              <textarea name="step_desc[]" placeholder="Describe what to do..."></textarea>
+            </div>
+            <div class="field">
+              <label>Time (minutes)</label>
+              <input type="number" min="0" value="0" class="step-time" name="step_time[]">
+            </div>
+            <button type="button" class="remove" aria-label="Remove step">Remove</button>
+          </div>
+        </template>
+
       </form>
     </section>
   </main>
