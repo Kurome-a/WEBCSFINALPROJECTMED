@@ -1,3 +1,4 @@
+<!-- FINISHED DON'T TOUCH -->
 <!doctype html>
 <html lang="en">
 <head>
@@ -32,7 +33,7 @@
       <p class="meta" style="margin-bottom:16px">Share your ideas with us here</p>
 
       <!-- user info -->
-      <form class="form" action="#" method="post">
+      <form id="meal-form" class="form" action="#" method="post" enctype="multipart/form-data" accept-charset="utf-8" >
         <div class="field">
           <label for="name">Your name</label>
           <input id="name" name="name" type="text" placeholder="Name here" required>
@@ -40,7 +41,7 @@
 
         <div class="field">
           <label for="email">Email</label>
-          <input id="email" name="email" type="text" placeholder="you@example.com">
+          <input id="email" name="email" type="email" placeholder="you@example.com">
         </div>
 
         <!-- dish name -->
@@ -103,11 +104,22 @@
           <input id="servings" name="servings" type="number" min="1" value="2">
         </div>
 
+        <!-- notes/allergies -->
         <div class="field" style="grid-column:1/-1">
           <label for="notes">Notes / Allergies</label>
           <textarea id="notes" name="notes" placeholder="Anything we should know?"></textarea>
         </div>
 
+        <!--  emailjs will use -->
+        <input type="hidden" id="total_time_input" name="total_time" value="0">
+        <input type="hidden" id="ingredients_joined" name="ingredients" value="">
+        <input type="hidden" id="steps_joined" name="steps" value="">
+        <input type="hidden" id="image_url_hidden" name="image_url" value="">
+
+        <!-- status message -->
+        <p id="form-status" class="meta" style="display:none"></p>
+
+        <!-- buttons -->
         <div class="actions">
           <span class="totaltime">Total time: <span id="total-time">0</span> min</span>
           <button type="reset" class="btn-ghost">Reset</button>
@@ -149,7 +161,13 @@
 
 </div>
 
-<!-- behavior -->
+<!--emailjslibrary+key -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+  emailjs.init({ publicKey: '7kdfsh8hRJ4mLzfiu' });
+</script>
+
+<!-- behavior+emailjs submit -->
 <script>
 (function(){
   const form = document.getElementById('meal-form');
@@ -207,6 +225,8 @@
       if(!isNaN(v)) total += v;
     });
     if(totalTimeEl) totalTimeEl.textContent = String(total);
+    const hidden = document.getElementById('total_time_input');
+    if (hidden) hidden.value = String(total);
   }
   function addStep(desc='', minutes=0){
     const node = stepTpl.content.firstElementChild.cloneNode(true);
@@ -227,8 +247,6 @@
     updateTotalTime();
     ta.focus();
   }
-
-  // Enter on a minutes field adds the next step
   stepList.addEventListener('keydown', (e) => {
     if(e.target.matches && e.target.matches('.step-time') && e.key === 'Enter'){
       e.preventDefault();
@@ -237,8 +255,6 @@
   });
 
   addStepBtn.addEventListener('click', () => addStep());
-
-  /* ---- Initialize blank ingredient+step ---- */
   addIngredient();
   addStep();
 
@@ -254,8 +270,40 @@
       updateTotalTime();
     }, 0);
   });
+
+  /* ---- emailjs submit ---- */
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const status = document.getElementById('form-status');
+    if (status) { status.textContent = 'Sending…'; status.style.display = 'block'; }
+    const ingInputs = Array.from(document.querySelectorAll('input[name="ingredient_text[]"]'))
+                           .map(i => (i.value || '').trim())
+                           .filter(Boolean);
+    const stepBlocks = Array.from(document.querySelectorAll('.item.step'));
+    const stepLines = stepBlocks.map((el, idx) => {
+      const desc = (el.querySelector('textarea[name="step_desc[]"]')?.value || '').trim();
+      const mins = (el.querySelector('input[name="step_time[]"]')?.value || '0').trim();
+      if (!desc) return null;
+      return `Step ${idx+1}: ${desc} (${mins} min)`;
+    }).filter(Boolean);
+
+    document.getElementById('ingredients_joined').value = ingInputs.join('\n');
+    document.getElementById('steps_joined').value       = stepLines.join('\n');
+    document.getElementById('image_url_hidden').value   = (document.getElementById('imageUrl')?.value || '').trim();
+
+    try {
+      await emailjs.sendForm('service_hzsy9f6', 'template_5nh3jw3', form);
+      if (status) { status.textContent = '✅ Sent! Thanks for your suggestion.'; }
+      form.reset();
+    } catch (err) {
+      if (status) { status.textContent = '❌ Failed to send. Please try again.'; }
+      console.error(err);
+    }
+  });
 })();
 </script>
+
 
 </body>
 </html>
