@@ -76,6 +76,7 @@
           <label><input type="radio" name="mealtime" value="dessert"> Dessert</label>
         </fieldset>
 
+
         <!-- ingredients -->
         <div class="repeatable" id="ingredients-section">
           <div class="compact" style="justify-content:space-between">
@@ -84,6 +85,7 @@
           </div>
           <div class="list" id="ingredients-list"></div>
         </div>
+
 
         <!-- steps/process -->
         <div class="repeatable" id="steps-section">
@@ -95,6 +97,7 @@
           <small class="subtle">Tip: Add the time for each step; we'll total it for you automatically.</small>
         </div>
 
+        <!-- servings, notes -->
         <div class="field">
           <label for="servings">Servings</label>
           <input id="servings" name="servings" type="number" min="1" value="2">
@@ -110,17 +113,13 @@
           <button type="reset" class="btn-ghost">Reset</button>
           <button type="submit" class="btn-primary">Submit</button>
         </div>
-        
+
         <!-- Templates -->
         <template id="ingredient-tpl">
           <div class="item ingredient">
-            <div class="field">
-              <label>Amount</label>
-              <input type="text" name="ingredient_amount[]" placeholder="e.g., 2 tbsp">
-            </div>
-            <div class="field">
+            <div class="field wide">
               <label>Ingredient</label>
-              <input type="text" name="ingredient_name[]" placeholder="e.g., butter">
+              <input type="text" name="ingredient_text[]" placeholder="e.g., List your ingredients" />
             </div>
             <button type="button" class="remove" aria-label="Remove ingredient">Remove</button>
           </div>
@@ -129,12 +128,12 @@
         <template id="step-tpl">
           <div class="item step">
             <div class="field wide">
-              <label>Step description</label>
+              <label>Step <span class="step-num"></span></label>
               <textarea name="step_desc[]" placeholder="Describe what to do..."></textarea>
             </div>
             <div class="field">
               <label>Time (minutes)</label>
-              <input type="number" min="0" value="0" class="step-time" name="step_time[]">
+              <input type="number" min="0" value="0" class="step-time" name="step_time[]" />
             </div>
             <button type="button" class="remove" aria-label="Remove step">Remove</button>
           </div>
@@ -149,5 +148,114 @@
   </footer>
 
 </div>
+
+<!-- behavior -->
+<script>
+(function(){
+  const form = document.getElementById('meal-form');
+
+  /* ---- image upload/link ---- */
+  const imgUrlInput = document.getElementById('imageUrl');
+  const imgFileInput = document.getElementById('imageFile');
+  const preview = document.getElementById('preview');
+  let objectUrl = "";
+
+  function showPreview(src){ if(preview){ preview.style.display = src ? 'block' : 'none'; preview.src = src || ""; } }
+  function revokeObjectUrl(){ if(objectUrl){ URL.revokeObjectURL(objectUrl); objectUrl = ""; } }
+  function updatePreviewFromUrl(){ if(imgFileInput && imgFileInput.files?.length) return; showPreview((imgUrlInput?.value || "").trim()); }
+  function updatePreviewFromFile(){
+    if(!imgFileInput) return;
+    const file = imgFileInput.files?.[0];
+    revokeObjectUrl();
+    if(file){ objectUrl = URL.createObjectURL(file); showPreview(objectUrl); }
+    else { updatePreviewFromUrl(); }
+  }
+  imgUrlInput && imgUrlInput.addEventListener('input', updatePreviewFromUrl);
+  imgFileInput && imgFileInput.addEventListener('change', updatePreviewFromFile);
+
+  /* ---- ingredients ---- */
+  const ingList  = document.getElementById('ingredients-list');
+  const ingTpl   = document.getElementById('ingredient-tpl');
+  const addIngBtn= document.getElementById('add-ingredient');
+
+  function addIngredient(text=''){
+    const node = ingTpl.content.firstElementChild.cloneNode(true);
+    const input = node.querySelector('input[name="ingredient_text[]"]');
+    input.value = text;
+    node.querySelector('.remove').addEventListener('click', () => node.remove());
+    ingList.appendChild(node);
+    input.focus();
+  }
+  addIngBtn.addEventListener('click', () => addIngredient());
+
+  /* ---- steps/process ---- */
+  const stepList   = document.getElementById('steps-list');
+  const stepTpl    = document.getElementById('step-tpl');
+  const addStepBtn = document.getElementById('add-step');
+  const totalTimeEl= document.getElementById('total-time');
+
+  function renumberSteps(){
+    stepList.querySelectorAll('.item.step').forEach((el, i) => {
+      const num = el.querySelector('.step-num');
+      if(num) num.textContent = String(i + 1);
+    });
+  }
+  function updateTotalTime(){
+    let total = 0;
+    stepList.querySelectorAll('.step-time').forEach(inp => {
+      const v = parseInt(inp.value, 10);
+      if(!isNaN(v)) total += v;
+    });
+    if(totalTimeEl) totalTimeEl.textContent = String(total);
+  }
+  function addStep(desc='', minutes=0){
+    const node = stepTpl.content.firstElementChild.cloneNode(true);
+    const ta   = node.querySelector('textarea[name="step_desc[]"]');
+    const time = node.querySelector('input.step-time');
+    ta.value = desc;
+    time.value = minutes;
+
+    time.addEventListener('input', updateTotalTime);
+    node.querySelector('.remove').addEventListener('click', () => {
+      node.remove();
+      renumberSteps();
+      updateTotalTime();
+    });
+
+    stepList.appendChild(node);
+    renumberSteps();
+    updateTotalTime();
+    ta.focus();
+  }
+
+  // Enter on a minutes field adds the next step
+  stepList.addEventListener('keydown', (e) => {
+    if(e.target.matches && e.target.matches('.step-time') && e.key === 'Enter'){
+      e.preventDefault();
+      addStep();
+    }
+  });
+
+  addStepBtn.addEventListener('click', () => addStep());
+
+  /* ---- Initialize blank ingredient+step ---- */
+  addIngredient();
+  addStep();
+
+  /* ---- reset ---- */
+  form.addEventListener('reset', () => {
+    setTimeout(() => {
+      ingList.innerHTML = '';
+      stepList.innerHTML = '';
+      addIngredient();
+      addStep();
+      revokeObjectUrl();
+      showPreview('');
+      updateTotalTime();
+    }, 0);
+  });
+})();
+</script>
+
 </body>
 </html>
