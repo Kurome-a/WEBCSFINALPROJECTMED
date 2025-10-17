@@ -37,7 +37,55 @@
       <p class="meta" style="margin-bottom:16px">Quick reference for dishes.</p>
 
       <div class="grid">
-        <article class="card">
+        <article class="card"><!-- bk1 -->
+          <a class="card-link" href="breakfastpage.html#acaibreakfastbowl" aria-label="Open Breakfast page" >
+            <img src="Images/Breakfast/AcaiBreakfastBowl.jpg" alt="acaibreakfastbowl">
+            <h4>Acai BreakfastBowl</h4>
+          </a>
+          <p class="meta">Made with the frozen and mashed fruit of the açaí palm</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
+        </article>
+        <article class="card"><!-- bk2 -->
+          <a class="card-link" href="breakfastpage.html#avocadotoast" aria-label="Open Breakfast page">
+            <img src="Images/Breakfast/avocadotoast.jpg" alt="Avocado Toasts">
+            <h4>Avocado Toasts</h4>
+          </a>
+          <p class="meta">Popular for being nutritious and customizable, frequently enjoyed for breakfast</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
+        </article>
+        <article class="card"><!-- bk3 -->
+          <a class="card-link" href="breakfastpage.html#breakfastburrito" aria-label="Open Breakfast page" >
+            <img src="Images/Breakfast/breakfastburrito.jpg" alt="Breakfast Burritos">
+            <h4>Breakfast Burritos</h4>
+          </a>
+          <p class="meta">Hand-held meal of breakfast fillings wrapped around a flour tortilla</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
+        </article>
+        <article class="card"><!-- bk4 -->
+          <a class="card-link" href="breakfastpage.html#breakfastcasserole" aria-label="Open Breakfast page">
+            <img src="Images/Breakfast/breakfastcasserole.jpg" alt="Breakfast Casserole">
+            <h4>Breakfast Casserole</h4>
+          </a>
+          <p class="meta">Oven-baked dish made with eggs, cheese, and various other breakfast foods</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
+        </article>
+        <article class="card"><!-- bk5 -->
+          <a class="card-link" href="breakfastpage.html#farmersbreakfast" aria-label="Open Breakfast page" >
+            <img src="Images/Breakfast/farmersbreakfast.jpg" alt="Farmer's Breakfast">
+            <h4>Farmer's Breakfast</h4>
+          </a>
+          <p class="meta">Protein-rich meal designed to provide energy for a day of hard, physical labor</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
+        </article>
+        <article class="card"><!-- bk6 -->
+          <a class="card-link" href="breakfastpage.html#cheesedanish" aria-label="Open Breakfast page">
+            <img src="Images/Breakfast/cheesedanish.jpg" alt="Cheese Danish">
+            <h4>Cheese Danish</h4>
+          </a>
+          <p class="meta">Breakfast pastry consisting of a flaky, buttery dough with sweetened cream cheese filling</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
+        </article>
+        <article class="card"><!-- bk7 -->
           <a class="card-link" href="breakfastpage.html#cheesygarlicomelette" aria-label="Open Breakfast page" >
             <img src="Images/Breakfast/cheesygarlicomelette.jpg" alt="Cheesy Garlic Omelette">
             <h4>Cheesy Garlic Omelette</h4>
@@ -45,8 +93,7 @@
           <p class="meta">Fluffy 3-egg omelette with cheddar, herbs, and garlic.</p>
           <p class="meta"><span class="item-tag">Breakfast</span></p>
         </article>
-
-        <article class="card">
+        <article class="card"><!-- bk8 -->
           <a class="card-link" href="breakfastpage.html#classicpancake" aria-label="Open Breakfast page">
             <img src="Images/Breakfast/pancake.jpg" alt="Classic Pancake">
             <h4>Classic Pancake</h4>
@@ -54,6 +101,23 @@
           <p class="meta">Light, fluffy pancakes with maple syrup.</p>
           <p class="meta"><span class="item-tag">Breakfast</span></p>
         </article>
+        <article class="card"><!-- bk9 -->
+          <a class="card-link" href="breakfastpage.html#cornedbeefhash" aria-label="Open Breakfast page" >
+            <img src="Images/Breakfast/cornedbeefhash.jpg" alt="Corned Beef Hash">
+            <h4>Corned Beef Hash</h4>
+          </a>
+          <p class="meta">Hearty dish made from chopped corned beef, potatoes, and onions</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
+        </article>
+        <article class="card"><!-- bk10 -->
+          <a class="card-link" href="breakfastpage.html#lentilfrittata" aria-label="Open Breakfast page">
+            <img src="Images/Breakfast/lentilfrittata.jpg" alt="Lentil Frittata">
+            <h4>Lentil Frittata</h4>
+          </a>
+          <p class="meta">Egg-based dish similar to an open-faced omelet or a crustless quiche, with cooked lentils</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
+        </article>
+
 
       </div>
     </section>
@@ -64,5 +128,59 @@
   </footer>
 
 </div>
+<script>
+(function () {
+  const style = document.createElement('style');
+  style.textContent = `.is-hidden{display:none!important}`;
+  document.head.appendChild(style);
+
+  const input = document.getElementById('menu-search');
+  if (!input) return;
+
+  const cards = Array.from(document.querySelectorAll('.grid .card'));
+
+  function mkRecords() {
+    return cards.map(el => {
+      const title = el.querySelector('h4')?.textContent?.toLowerCase() || '';
+      const meta  = Array.from(el.querySelectorAll('.meta'))
+                    .map(p => p.textContent.toLowerCase()).join(' ');
+      const alt   = el.querySelector('img')?.alt?.toLowerCase() || '';
+      return { el, text: (title + ' ' + meta + ' ' + alt).trim() };
+    });
+  }
+
+  let records = mkRecords();
+
+  function updateNoResults(visibleCount) {
+    let note = document.getElementById('no-results');
+    if (visibleCount === 0) {
+      if (!note) {
+        note = document.createElement('p');
+        note.id = 'no-results';
+        note.className = 'meta';
+        note.style.marginTop = '8px';
+        note.textContent = 'No dishes match your search.';
+        input.parentElement.insertAdjacentElement('afterend', note);
+      }
+    } else if (note) {
+      note.remove();
+    }
+  }
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let visible = 0;
+    records.forEach(({ el, text }) => {
+      const show = !q || text.includes(q);
+      el.classList.toggle('is-hidden', !show);
+      if (show) visible++;
+    });
+    updateNoResults(visible);
+  });
+
+  window.refreshGlossarySearch = () => { records = mkRecords(); };
+})();
+</script>
+
 </body>
 </html>
