@@ -8,8 +8,6 @@
 </head>
 <body>
 <div class="site">
-  <!--MISSING Search-->
-
   <header>
     <div class="container header-inner">
       <a class="brand" href="index.html"><span class="logo"></span><span>Cooking101</span></a>
@@ -27,6 +25,11 @@
     </div>
   </header>
 
+<!-- search -->
+<div class="container toolbar">
+  <input id="menu-search" type="search" placeholder="Search dishes…" aria-label="Search dishes">
+</div>
+
 <!-- Keep format, link to put direct link to item -->
   <main class="container">
     <section class="panel">
@@ -35,15 +38,21 @@
 
       <div class="grid">
         <article class="card">
-          <img src="" alt="Quinoa">
-          <h4>Quinoa</h4>
-          <p class="meta">A gluten-free seed cooked like a grain; complete protein.</p>
+          <a class="card-link" href="breakfastpage.html#dish-cheesy-garlic-omelette" aria-label="Open Breakfast page">
+            <img src="Images/Breakfast/cheesygarlicomelette.jpg" alt="Cheesy Garlic Omelette">
+            <h4>Cheesy Garlic Omelette</h4>
+          </a>
+          <p class="meta">Fluffy 3-egg omelette with cheddar, herbs, and garlic.</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
         </article>
 
         <article class="card">
-          <img src="" alt="Aioli">
-          <h4>Aioli</h4>
-          <p class="meta">Garlic-forward emulsion similar to mayo, used as a sauce.</p>
+          <a class="card-link" href="breakfastpage.html#classic-pancake" aria-label="Open Breakfast page">
+            <img src="Images/Breakfast/pancake.jpg" alt="Classic Pancake">
+            <h4>Classic Pancake</h4>
+          </a>
+          <p class="meta">Light, fluffy pancakes with maple syrup.</p>
+          <p class="meta"><span class="item-tag">Breakfast</span></p>
         </article>
 
         <article class="card">
