@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="site">
-  <!--MISSING Search, Catalog(a-z)-->
+  <!--MISSING Search-->
 
   <header>
     <div class="container header-inner">
@@ -27,44 +27,140 @@
     </div>
   </header>
 
-  <main>
-  <ul class="menu">
-    <li class="dnitem">
-      <img src="" alt="Garlic butter steak">
-      <div>
-        <p class="item-title">Garlic Butter Steak</p>
-        <p class="item-desc">With roasted vegetables.</p>
-      </div>
-      <span class="item-tag">30 min</span>
-    </li>
+<main class="container">
+<!-- Dish 1 -->
+<details class="panel recipe" open>
+  <summary class="item recipe-summary">
+    <img id="dish1-thumb" src="" alt="Dish photo">
+    <div>
+      <p class="item-title" id="dish1-title">Dish1</p>
+      <p class="item-desc" id="dish1-desc">Fluffy 3-egg omelette with cheddar, herbs, and a hint of garlic.</p>
+    </div>
+    <span class="item-tag"><span class="total-time-pill">0</span> min</span>
+    <span class="chevron" aria-hidden="true"></span>
+  </summary>
 
-    <li class="dnitem">
-      <img src="" alt="Honey glazed salmon">
-      <div>
-        <p class="item-title">Honey Glazed Salmon</p>
-        <p class="item-desc">Sweet soy glaze, oven-baked.</p>
+  <div class="recipe-content">
+    <div class="repeatable" id="dish1-ingredients">
+      <div class="compact section-head">
+        <h3 class="section-title">Ingredients</h3>
       </div>
-      <span class="item-tag">25 min</span>
-    </li>
+      <ul class="list bullets">
+        <li>3 large eggs</li>
+        <li>2 tbsp shredded cheddar</li>
+        <li>1 tbsp butter</li>
+        <li>1 clove garlic, minced</li>
+        <li>Salt &amp; pepper to taste</li>
+        <li>Chopped chives (optional)</li>
+      </ul>
+    </div>
 
-    <li class="dnitem">
-      <img src="" alt="Chickpea curry">
-      <div>
-        <p class="item-title">Chickpea Curry</p>
-        <p class="item-desc">Coconut, chickpeas, spinach.</p>
+    <div class="repeatable" id="dish1-steps">
+      <div class="compact section-head">
+        <h3 class="section-title">Process (Step-by-step)</h3>
       </div>
-      <span class="item-tag">1 hr</span>
-    </li>
+      <ol class="list steps">
+        <li class="item" data-min="2">
+          <span>Beat eggs with salt and pepper.</span>
+          <span class="item-tag" aria-label="Step time">2 min</span>
+        </li>
+        <li class="item" data-min="1">
+          <span>Melt butter in a nonstick pan; sauté garlic briefly.</span>
+          <span class="item-tag">1 min</span>
+        </li>
+        <li class="item" data-min="3">
+          <span>Pour eggs, cook until just set; add cheddar.</span>
+          <span class="item-tag">3 min</span>
+        </li>
+        <li class="item" data-min="1">
+          <span>Fold omelette; rest and garnish with chives.</span>
+          <span class="item-tag">1 min</span>
+        </li>
+      </ol>
+      <small class="subtle">Times per step are totaled for you.</small>
+    </div>
 
-    <li class="dnitem">
-      <img src="" alt="Spinach lasagna">
-      <div>
-        <p class="item-title">Spinach Lasagna</p>
-        <p class="item-desc">Ricotta, spinach, marinara.</p>
+    <div class="field">
+      <label>Servings</label>
+      <p class="meta" id="dish1-servings">2</p>
+    </div>
+
+    <div class="field field-full">
+      <label>Notes / Allergies</label>
+      <p class="meta" id="dish1-notes">Contains egg and dairy.</p>
+    </div>
+
+    <div class="actions">
+      <span class="totaltime">Total time: <span class="total-time">0</span> min</span>
+    </div>
+  </div>
+</details>
+
+<!-- Dish 2 -->
+<details class="panel recipe">
+  <summary class="item recipe-summary">
+    <img id="dish2-thumb" src="" alt="Dish photo">
+    <div>
+      <p class="item-title" id="dish2-title">Dish2</p>
+      <p class="item-desc" id="dish2-desc">Light, fluffy pancakes with maple syrup.</p>
+    </div>
+    <span class="item-tag"><span class="total-time-pill">0</span> min</span>
+    <span class="chevron" aria-hidden="true"></span>
+  </summary>
+
+  <div class="recipe-content">
+    <div class="repeatable" id="dish2-ingredients">
+      <div class="compact section-head">
+        <h3 class="section-title">Ingredients</h3>
       </div>
-      <span class="item-tag">30 min</span>
-    </li>
-  </ul>
+      <ul class="list bullets">
+        <li>1 cup all-purpose flour</li>
+        <li>2 tbsp sugar</li>
+        <li>1 tsp baking powder</li>
+        <li>1 egg</li>
+        <li>3/4 cup milk</li>
+        <li>1 tbsp butter (melted)</li>
+        <li>Pinch of salt</li>
+      </ul>
+    </div>
+
+    <div class="repeatable" id="dish2-steps">
+      <div class="compact section-head">
+        <h3 class="section-title">Process (Step-by-step)</h3>
+      </div>
+      <ol class="list steps">
+        <li class="item" data-min="5">
+          <span>Whisk dry ingredients; add wet and mix until just combined.</span>
+          <span class="item-tag">5 min</span>
+        </li>
+        <li class="item" data-min="2">
+          <span>Preheat pan and lightly butter.</span>
+          <span class="item-tag">2 min</span>
+        </li>
+        <li class="item" data-min="6">
+          <span>Cook pancakes in batches (flip once when bubbles form).</span>
+          <span class="item-tag">6 min</span>
+        </li>
+      </ol>
+      <small class="subtle">Times per step are totaled for you.</small>
+    </div>
+
+    <div class="field">
+      <label>Servings</label>
+      <p class="meta" id="dish2-servings">3</p>
+    </div>
+
+    <div class="field field-full">
+      <label>Notes / Allergies</label>
+      <p class="meta" id="dish2-notes">Contains gluten, egg, and dairy.</p>
+    </div>
+
+    <div class="actions">
+      <span class="totaltime">Total time: <span class="total-time">0</span> min</span>
+    </div>
+  </div>
+</details>
+
 </main>
 
 
@@ -73,5 +169,22 @@
   </footer>
 
 </div>
+<script>
+  (function(){
+    function calcRecipe(recipeEl){
+      const steps = recipeEl.querySelectorAll('.steps .item');
+      let total = 0;
+      steps.forEach(li => {
+        const m = parseInt(li.getAttribute('data-min') || '0', 10);
+        if (!isNaN(m)) total += m;
+      });
+      const pill = recipeEl.querySelector('.total-time-pill');
+      const footer = recipeEl.querySelector('.total-time');
+      if (pill) pill.textContent = String(total);
+      if (footer) footer.textContent = String(total);
+    }
+    document.querySelectorAll('.recipe').forEach(calcRecipe);
+  })();
+</script>
 </body>
 </html>
