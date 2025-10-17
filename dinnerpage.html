@@ -8,7 +8,6 @@
 </head>
 <body>
 <div class="site">
-  <!--MISSING Search-->
 
   <header>
     <div class="container header-inner">
@@ -27,19 +26,24 @@
     </div>
   </header>
 
+<!-- search -->
+<div class="container toolbar">
+  <input id="menu-search" type="search" placeholder="Search dishes…" aria-label="Search dishes">
+</div>
+
 <main class="container">
 <!-- Dish 1 -->
 <details class="panel recipe" open>
   <summary class="item recipe-summary">
     <img id="dish1-thumb" src="" alt="Dish photo">
     <div>
-      <p class="item-title" id="dish1-title">Dish1</p>
+      <p class="item-title" id="dish1-title">Cheesy Garlic Omelette</p>
       <p class="item-desc" id="dish1-desc">Fluffy 3-egg omelette with cheddar, herbs, and a hint of garlic.</p>
     </div>
     <span class="item-tag"><span class="total-time-pill">0</span> min</span>
     <span class="chevron" aria-hidden="true"></span>
   </summary>
-
+  <!-- recipe -->
   <div class="recipe-content">
     <div class="repeatable" id="dish1-ingredients">
       <div class="compact section-head">
@@ -54,7 +58,7 @@
         <li>Chopped chives (optional)</li>
       </ul>
     </div>
-
+    <!-- steps -->
     <div class="repeatable" id="dish1-steps">
       <div class="compact section-head">
         <h3 class="section-title">Process (Step-by-step)</h3>
@@ -79,17 +83,17 @@
       </ol>
       <small class="subtle">Times per step are totaled for you.</small>
     </div>
-
+    <!-- serving -->
     <div class="field">
       <label>Servings</label>
       <p class="meta" id="dish1-servings">2</p>
     </div>
-
+    <!-- notes/allergies -->
     <div class="field field-full">
       <label>Notes / Allergies</label>
       <p class="meta" id="dish1-notes">Contains egg and dairy.</p>
     </div>
-
+    <!-- time -->
     <div class="actions">
       <span class="totaltime">Total time: <span class="total-time">0</span> min</span>
     </div>
@@ -101,13 +105,13 @@
   <summary class="item recipe-summary">
     <img id="dish2-thumb" src="" alt="Dish photo">
     <div>
-      <p class="item-title" id="dish2-title">Dish2</p>
+      <p class="item-title" id="dish2-title">Classic Pancakes</p>
       <p class="item-desc" id="dish2-desc">Light, fluffy pancakes with maple syrup.</p>
     </div>
     <span class="item-tag"><span class="total-time-pill">0</span> min</span>
     <span class="chevron" aria-hidden="true"></span>
   </summary>
-
+  <!-- recipe -->
   <div class="recipe-content">
     <div class="repeatable" id="dish2-ingredients">
       <div class="compact section-head">
@@ -123,7 +127,7 @@
         <li>Pinch of salt</li>
       </ul>
     </div>
-
+    <!-- steps -->
     <div class="repeatable" id="dish2-steps">
       <div class="compact section-head">
         <h3 class="section-title">Process (Step-by-step)</h3>
@@ -144,17 +148,17 @@
       </ol>
       <small class="subtle">Times per step are totaled for you.</small>
     </div>
-
+    <!-- serving -->
     <div class="field">
       <label>Servings</label>
       <p class="meta" id="dish2-servings">3</p>
     </div>
-
+    <!-- notes/allergies -->
     <div class="field field-full">
       <label>Notes / Allergies</label>
       <p class="meta" id="dish2-notes">Contains gluten, egg, and dairy.</p>
     </div>
-
+    <!-- time -->
     <div class="actions">
       <span class="totaltime">Total time: <span class="total-time">0</span> min</span>
     </div>
@@ -169,22 +173,69 @@
   </footer>
 
 </div>
+
 <script>
-  (function(){
-    function calcRecipe(recipeEl){
-      const steps = recipeEl.querySelectorAll('.steps .item');
-      let total = 0;
-      steps.forEach(li => {
-        const m = parseInt(li.getAttribute('data-min') || '0', 10);
-        if (!isNaN(m)) total += m;
-      });
-      const pill = recipeEl.querySelector('.total-time-pill');
-      const footer = recipeEl.querySelector('.total-time');
-      if (pill) pill.textContent = String(total);
-      if (footer) footer.textContent = String(total);
+(function () {
+  function calcRecipe(recipeEl) {
+    const steps = recipeEl.querySelectorAll('.steps .item');
+    let total = 0;
+    steps.forEach(li => {
+      const m = parseInt(li.getAttribute('data-min') || '0', 10);
+      if (!isNaN(m)) total += m;
+    });
+    const pill = recipeEl.querySelector('.total-time-pill');
+    const footer = recipeEl.querySelector('.total-time');
+    if (pill) pill.textContent = String(total);
+    if (footer) footer.textContent = String(total);
+  }
+  document.querySelectorAll('.recipe').forEach(calcRecipe);
+
+  const input = document.getElementById('menu-search');
+  if (!input) return; 
+
+  const entries = Array.from(document.querySelectorAll(
+    'details.recipe, .bkitem, .lhitem, .dnitem, .dsitem'
+  ));
+
+  const records = entries.map(el => {
+    const title = el.querySelector('.item-title')?.textContent?.toLowerCase() || '';
+    const desc  = el.querySelector('.item-desc')?.textContent?.toLowerCase() || '';
+    return { el, text: (title + ' ' + desc).trim() };
+  });
+
+  function updateNoResults(visibleCount) {
+    let note = document.getElementById('no-results');
+    if (visibleCount === 0) {
+      if (!note) {
+        note = document.createElement('p');
+        note.id = 'no-results';
+        note.className = 'meta';
+        note.style.marginTop = '8px';
+        note.textContent = 'No dishes match your search.';
+        input.parentElement.insertAdjacentElement('afterend', note);
+      }
+    } else if (note) {
+      note.remove();
     }
-    document.querySelectorAll('.recipe').forEach(calcRecipe);
-  })();
+  }
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let visible = 0;
+
+    records.forEach(({ el, text }) => {
+      const show = !q || text.includes(q);
+      el.classList.toggle('is-hidden', !show);
+      if (show) visible++;
+      if (el.tagName.toLowerCase() === 'details' && !show) el.open = false;
+    });
+
+    updateNoResults(visible);
+  });
+})();
 </script>
+
+
 </body>
 </html>
+
