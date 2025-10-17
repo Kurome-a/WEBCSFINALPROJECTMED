@@ -8,8 +8,6 @@
 </head>
 <body>
 <div class="site">
-  <!--MISSING Search-->
-
   <header>
     <div class="container header-inner">
       <a class="brand" href="index.html"><span class="logo"></span><span>Cooking101</span></a>
@@ -27,7 +25,10 @@
     </div>
   </header>
 
-
+<!-- search -->
+<div class="container toolbar">
+  <input id="menu-search" type="search" placeholder="Search dishes…" aria-label="Search dishes">
+</div>
 
 <main class="container">
 <!-- Dish 1 -->
@@ -173,22 +174,66 @@
 </div>
 
 <script>
-  (function(){
-    function calcRecipe(recipeEl){
-      const steps = recipeEl.querySelectorAll('.steps .item');
-      let total = 0;
-      steps.forEach(li => {
-        const m = parseInt(li.getAttribute('data-min') || '0', 10);
-        if (!isNaN(m)) total += m;
-      });
-      const pill = recipeEl.querySelector('.total-time-pill');
-      const footer = recipeEl.querySelector('.total-time');
-      if (pill) pill.textContent = String(total);
-      if (footer) footer.textContent = String(total);
+(function () {
+  function calcRecipe(recipeEl) {
+    const steps = recipeEl.querySelectorAll('.steps .item');
+    let total = 0;
+    steps.forEach(li => {
+      const m = parseInt(li.getAttribute('data-min') || '0', 10);
+      if (!isNaN(m)) total += m;
+    });
+    const pill = recipeEl.querySelector('.total-time-pill');
+    const footer = recipeEl.querySelector('.total-time');
+    if (pill) pill.textContent = String(total);
+    if (footer) footer.textContent = String(total);
+  }
+  document.querySelectorAll('.recipe').forEach(calcRecipe);
+
+  const input = document.getElementById('menu-search');
+  if (!input) return; 
+
+  const entries = Array.from(document.querySelectorAll(
+    'details.recipe, .bkitem, .lhitem, .dnitem, .dsitem'
+  ));
+
+  const records = entries.map(el => {
+    const title = el.querySelector('.item-title')?.textContent?.toLowerCase() || '';
+    const desc  = el.querySelector('.item-desc')?.textContent?.toLowerCase() || '';
+    return { el, text: (title + ' ' + desc).trim() };
+  });
+
+  function updateNoResults(visibleCount) {
+    let note = document.getElementById('no-results');
+    if (visibleCount === 0) {
+      if (!note) {
+        note = document.createElement('p');
+        note.id = 'no-results';
+        note.className = 'meta';
+        note.style.marginTop = '8px';
+        note.textContent = 'No dishes match your search.';
+        input.parentElement.insertAdjacentElement('afterend', note);
+      }
+    } else if (note) {
+      note.remove();
     }
-    document.querySelectorAll('.recipe').forEach(calcRecipe);
-  })();
+  }
+
+  input.addEventListener('input', () => {
+    const q = input.value.trim().toLowerCase();
+    let visible = 0;
+
+    records.forEach(({ el, text }) => {
+      const show = !q || text.includes(q);
+      el.classList.toggle('is-hidden', !show);
+      if (show) visible++;
+      if (el.tagName.toLowerCase() === 'details' && !show) el.open = false;
+    });
+
+    updateNoResults(visible);
+  });
+})();
 </script>
+
 
 </body>
 </html>
