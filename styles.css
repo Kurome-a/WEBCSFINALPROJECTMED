@@ -24,11 +24,6 @@ body{
 }
 
 .menu{ list-style:none; margin:24px auto; padding:0; max-width:860px; display:grid; gap:14px; }
-.bkitem,.lhitem,.dnitem,.dsitem{
-  display:grid; grid-template-columns:56px 1fr auto; align-items:center; gap:12px;
-  padding:12px; border:1px solid rgba(0,0,0,.1); border-radius:14px; background:#fff;
-}
-.bkitem img,.lhitem img,.dnitem img,.dsitem img{ width:56px; height:56px; border-radius:12px; object-fit:cover; }
 .item-title{ margin:0; font-weight:700; }
 .item-desc{ margin:4px 0 0; color:var(--muted); font-size:14px; }
 .item-tag{ padding:6px 10px; border-radius:999px; border:1px solid rgba(0,0,0,.12); }
