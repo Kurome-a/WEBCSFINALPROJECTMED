@@ -88,11 +88,15 @@ main{ padding:34px 0 60px; }
 }
 .is-hidden { display: none !important; }
 
-.toolbar input[type="search"]{
-  height: 38px; padding: 0 12px; border-radius: 12px;
-  border: 1px solid rgba(0,0,0,.12); background: #fff; width: min(520px, 100%);
-  font-weight: 600;
+.toolbar{
+  display:flex; justify-content:center; padding:12px 0;
 }
+.toolbar input[type="search"]{
+  height:38px; padding:0 12px; border-radius:12px;
+  border:1px solid rgba(0,0,0,.12); background:#fff;
+  width:min(520px,100%); font-weight:600;
+}
+
 
 /* Home */
 .hero{
